@@ -19,6 +19,15 @@ function createCell(width, parent) {
             cell.style.backgroundColor = 'rgb(255, 255, 255)';
         }
     });
+    cell.addEventListener('click', () => {
+        if (mode == 'draw') {
+            let brushColor = document.querySelector('input').value;
+            cell.style.backgroundColor = brushColor;
+        }
+        if (mode == 'eraser') {
+            cell.style.backgroundColor = 'rgb(255, 255, 255)';
+        }
+    });
     parent.appendChild(cell);
 }
 
@@ -42,7 +51,9 @@ function resizeGrid() {
 
 let gridBtn = document.querySelector('.grid-button');
 gridBtn.addEventListener('click', () => {
-    setGrid(prompt('Choose the number of grid cells on each side'));
+    const gridSize = Math.min(100, prompt('Choose the number of grid cells on each side').match(/\d+/));
+    setGrid(gridSize);
+    document.querySelector('.grid-dimensions').textContent = gridSize + " x " + gridSize;
 });
 
 let drawBtn = document.querySelector('.draw');
@@ -61,9 +72,7 @@ document.addEventListener('mousedown', (e) => {
         mouseIsDown = true;
     }
 });
-document.addEventListener('mouseup', (e) => {
-    mouseIsDown = false;
-});
+document.addEventListener('mouseup', () => mouseIsDown = false);
 
 window.addEventListener('resize', resizeGrid);
 
